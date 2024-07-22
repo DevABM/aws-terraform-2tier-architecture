@@ -1,6 +1,10 @@
 variable "aws_region" {}
 variable "instance_type" {}
-variable "key_pair_path" {}
+variable "key_pair_path" { 
+    type = "string" 
+    
+  
+}
 variable "user_data_path" {}
 variable "db_engine" {}
 variable "engine_version" {}

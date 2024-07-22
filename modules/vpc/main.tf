@@ -3,7 +3,7 @@ resource "aws_vpc" "vpc" {
   cidr_block = "10.0.0.0/16"  #You can change the CIDR block as per required
   enable_dns_hostnames = true
 
-  tags {
+  tags = {
     Name = "test_vpc"
   }
 }
@@ -19,7 +19,7 @@ output "out_vpc_cidr_block" {
 resource "aws_internet_gateway" "igw" {
   vpc_id = "${aws_vpc.vpc.id}"
 
-  tags {
+  tags ={
     Name = "test_vpc_igw"
   }
 }
@@ -31,7 +31,7 @@ resource "aws_subnet" "pub_subnet_1" {
   availability_zone = "${var.aws_region}a"
   map_public_ip_on_launch = "true"
 
-  tags {
+  tags = {
     Name = "pub_subnet_1"
   }
 }
@@ -46,7 +46,7 @@ resource "aws_subnet" "pub_subnet_2" {
   availability_zone = "${var.aws_region}b"
   map_public_ip_on_launch = "true"
 
-  tags {
+  tags = {
     Name = "pub_subnet_2"
   }
 }
@@ -62,7 +62,7 @@ resource "aws_subnet" "pvt_subnet_1" {
   map_public_ip_on_launch = "false"
   availability_zone = "${var.aws_region}b"
 
-  tags {
+  tags = {
     Name = "pvt_subnet_1"
   }
 }
@@ -77,7 +77,7 @@ resource "aws_subnet" "pvt_subnet_2" {
   availability_zone = "${var.aws_region}a"
   cidr_block = "10.0.4.0/24"  #You can change the CIDR block as per required
 
-  tags {
+  tags = {
     Name = "pvt_subnet_2"
   }
 }
@@ -91,7 +91,7 @@ resource "aws_db_subnet_group" "rds_subnet" {
   name = "rds_subnet"
   subnet_ids = ["${aws_subnet.pvt_subnet_1.id}", "${aws_subnet.pvt_subnet_2.id}"]
 
-  tags {
+  tags = {
     Name = "rds_subnet"
   }
 }
@@ -109,7 +109,7 @@ resource "aws_route_table" "pub_rtb" {
     gateway_id = "${aws_internet_gateway.igw.id}"
   }
 
-  tags {
+  tags = {
     Name = "pub_rtb"
   }
 }
@@ -121,7 +121,7 @@ resource "aws_route_table" "pub_rtb" {
 #================ Optional Start ================
 #================ EIP ================
 resource "aws_eip" "nat_ip" {
-  vpc = "true"
+  domain = "vpc"
 }
 
 #================ NAT Gateway ================
@@ -129,7 +129,7 @@ resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = "${aws_eip.nat_ip.id}"
   subnet_id = "${aws_subnet.pub_subnet_1.id}"
 
-  tags {
+  tags = {
     Name = "test_vpc_nat"
   }
 }
@@ -144,7 +144,7 @@ resource "aws_default_route_table" "pvt_rtb" {
     nat_gateway_id = "${aws_nat_gateway.nat_gateway.id}" #Optional
   }
 
-  tags {
+  tags = {
     Name = "pvt_rtb"
   }
 }
@@ -239,7 +239,7 @@ resource "aws_network_acl" "pub_nacl" {
     cidr_block = "0.0.0.0/0"
   }
 
-  tags {
+  tags = {
     Name = "pub_nacl"
   }
 }
@@ -265,7 +265,7 @@ resource "aws_default_network_acl" "pvt_nacl" {
     cidr_block = "${aws_vpc.vpc.cidr_block}"
   }
 
-  tags {
+  tags = {
     Name = "pvt_nacl"
   }
 }

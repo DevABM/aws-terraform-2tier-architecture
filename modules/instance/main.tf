@@ -4,20 +4,15 @@ data "aws_ami" "latest_amazon_ami" {
 
   filter {
     name   = "name"
-    values = ["amzn-ami-hvm-*-*-gp2"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
   }
 
   filter {
-    name = "virtualization-type"
+    name   = "virtualization-type"
     values = ["hvm"]
   }
 
-  filter {
-    name = "root-device-type"
-    values = ["ebs"]
-  }
-
-  owners = ["amazon"]
+  owners = ["099720109477"] # Canonical
 }
 
 #================ Key Pair ================
@@ -36,7 +31,7 @@ resource "aws_instance" "web_server" {
   user_data = "${file("${var.user_data_path}")}"
   vpc_security_group_ids = ["${var.web_server_sg_id}"]
 
-  tags {
+  tags = {
     Name = "Web Server"
   }
 }
@@ -49,7 +44,7 @@ resource "aws_db_instance" "rds_instance" {
   engine_version = "${var.engine_version}"
   instance_class = "${var.db_instance_class}"
   identifier = "${var.db_identifier}"
-  name = "${var.db_name}"
+  //name = "${var.db_name}"
   username = "${var.db_username}"
   password = "${var.db_password}"
   availability_zone = "${var.aws_region}a"
@@ -66,7 +61,7 @@ resource "aws_alb" "web_server_alb" {
   security_groups = ["${var.lb_sg_id}"]
   subnets = ["${var.pub_subnet_1_id}", "${var.pub_subnet_2_id}"]
 
-  tags {
+  tags = {
     Name = "web_server_alb"
   }
 }
@@ -120,7 +115,7 @@ resource "aws_alb_target_group_attachment" "web_server_alb_tg_attach" {
 
 #================ Launch Configuration ================
 resource "aws_launch_configuration" "web_server_lc" {
-  name = "web_server_lc"
+ // name = "web_server_lc"
   image_id = "${data.aws_ami.latest_amazon_ami.id}"
   instance_type = "${var.instance_type}"
   iam_instance_profile = "${var.iam_instance_profile_name}"
@@ -154,7 +149,7 @@ resource "aws_cloudwatch_metric_alarm" "web_server_add_alarm" {
   statistic = "Average"
   threshold = "70"
 
-  dimensions {
+  dimensions = {
     AutoScalingGroupName = "${aws_autoscaling_group.web_server_asg.name}"
   }
 
@@ -172,7 +167,7 @@ resource "aws_cloudwatch_metric_alarm" "web_server_minus_alarm" {
   statistic = "Average"
   threshold = "30"
 
-  dimensions {
+  dimensions = {
     AutoScalingGroupName = "${aws_autoscaling_group.web_server_asg.name}"
   }
 

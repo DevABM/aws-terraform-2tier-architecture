@@ -35,5 +35,5 @@ Spin up a 2-tier infrastructure on AWS Cloud using this terraform script within 
 <ul>
   <li>Go to EC2 dashboard and click on Load Balancer in the left pane and grab the dns name of your load balancer</li>
   <li>Paste the dns name in your browser's URL bar and hit enter</li>
-  <li>You should now see a "Hello World" meesage</li>
+  <li>You should now see a "Hello World" message</li>
 </ul>

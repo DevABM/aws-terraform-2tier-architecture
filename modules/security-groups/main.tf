@@ -24,7 +24,7 @@ resource "aws_security_group" "web_server_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
+  tags = {
     Name = "web_server_sg"
   }
 }
@@ -55,7 +55,7 @@ resource "aws_security_group" "app_server_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
+  tags = {
     Name = "app_server_sg"
   }
 }
@@ -86,7 +86,7 @@ resource "aws_security_group" "rds_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
+  tags = {
     Name = "rds_sg"
   }
 }
@@ -121,7 +121,7 @@ resource "aws_security_group" "lb_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
+  tags = {
     Name = "lb_sg"
   }
 }
