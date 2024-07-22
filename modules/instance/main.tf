@@ -16,10 +16,13 @@ data "aws_ami" "latest_amazon_ami" {
 }
 
 #================ Key Pair ================
+
+
 resource "aws_key_pair" "web_server_key" {
-  key_name = "web_server_key"
-  public_key = "${file("${var.key_pair_path}")}"
+  key_name   = "web_server_key"
+  public_key = file("~/.ssh/id_rsa_new.pub")
 }
+
 
 #================ Instance ================
 resource "aws_instance" "web_server" {
@@ -129,7 +132,8 @@ resource "aws_launch_configuration" "web_server_lc" {
 resource "aws_autoscaling_group" "web_server_asg" {
   launch_configuration = "${aws_launch_configuration.web_server_lc.id}"
   name = "web_server_asg"
-  availability_zones = ["${var.pub_subnet_1_id}", "${var.pub_subnet_2_id}"]
+  vpc_zone_identifier = ["${var.pub_subnet_1_id}", "${var.pub_subnet_2_id}"]
+  //availability_zones = ["${var.pub_subnet_1_id}", "${var.pub_subnet_2_id}"]
   max_size = "${var.asg_max_size}"
   min_size = "${var.asg_min_size}"
   health_check_grace_period = "${var.asg_health_check_gc}"

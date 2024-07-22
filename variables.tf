@@ -28,7 +28,7 @@ variable "instance_type" {
   default = "t2.micro" #Provide appropriate instance type supported by the region
 }
 variable "key_pair_path" {
-  default = "/Users/ABM/Downloads/LUIT.pem" #Must generate your own key pair and use them to SSH
+  default = "SSH Key" #Must generate your own key pair and use them to SSH
 }
 variable "user_data_path" {
   default = "userdata.sh" #Feel free to make changes as per requirement
@@ -40,7 +40,7 @@ variable "engine_version" {
   default = "8.0.35" #Provide appropriate version supported by the mysql as per the region
 }
 variable "db_instance_class" {
-  default = "db.t2.micro" #Provide appropriate db instance type supported by the region
+  default = "db.t3.micro" #Provide appropriate db instance type supported by the region
 }
 variable "db_identifier" {
   default = "testdb" #Use relevant name for db instance
