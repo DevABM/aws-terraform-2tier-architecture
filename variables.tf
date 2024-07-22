@@ -37,7 +37,7 @@ variable "db_engine" {
   default = "mysql"
 }
 variable "engine_version" {
-  default = "5.6.37" #Provide appropriate version supported by the mysql as per the region
+  default = "8.0.35" #Provide appropriate version supported by the mysql as per the region
 }
 variable "db_instance_class" {
   default = "db.t2.micro" #Provide appropriate db instance type supported by the region
